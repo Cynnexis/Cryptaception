@@ -3,7 +3,6 @@ package fr.polytech.berger.cryptaception
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.params.shadow.com.univocity.parsers.conversions.BigIntegerConversion
 import java.math.BigInteger
 import java.util.*
 import kotlin.collections.ArrayList
@@ -93,17 +92,17 @@ internal class TP {
     fun crackLoto() {
         // Voyante
         val lotoNumber = arrayListOf(1, 28, 49, 34, 14, 15)
-        val crypta = Cryptaception.randomCryptaception()
-        val publicKey = crypta.publicKey
+        val rsa = RSA.randomCryptaception()
+        val publicKey = rsa.publicKey
     
         val encryptedMessage = ArrayList<Number>(lotoNumber.size)
         for (loto in lotoNumber)
-            encryptedMessage.add(crypta.encrypt(loto))
+            encryptedMessage.add(rsa.encrypt(loto))
     
         // Attaquant
         val encryptionMap = HashMap<Int, BigInteger>()
         for (i in 1..49)
-            encryptionMap[i] = crypta.encrypt(i)
+            encryptionMap[i] = rsa.encrypt(i)
         val decryptedMessage = ArrayList<Int>(lotoNumber.size)
         for (m in encryptedMessage) {
             for (loto in encryptionMap.keys) {

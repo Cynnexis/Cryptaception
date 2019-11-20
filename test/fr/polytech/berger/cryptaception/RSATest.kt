@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.math.BigInteger
 
-internal class CryptaceptionTest {
+internal class RSATest {
 
-	private lateinit var crypta: Cryptaception
+	private lateinit var crypta: RSA
 	
 	@BeforeEach
 	fun setUp() {
-		crypta = Cryptaception.randomCryptaception(512)
+		crypta = RSA.randomCryptaception(512)
 	}
 	
 	@Test
@@ -37,10 +37,10 @@ internal class CryptaceptionTest {
 	
 	private fun <T> encryptDecrypt(value: T,
 			                       typeToString: (T) -> String,
-			                       encrypt: (Cryptaception, T) -> BigInteger,
-			                       decrypt: (Cryptaception, BigInteger) -> T) {
+			                       encrypt: (RSA, T) -> BigInteger,
+			                       decrypt: (RSA, BigInteger) -> T) {
 		val keyGenBegin = System.currentTimeMillis()
-		crypta = Cryptaception.randomCryptaception(512)
+		crypta = RSA.randomCryptaception(512)
 		val keyGenEnd = System.currentTimeMillis()
 		val keyGenElapsed = keyGenEnd - keyGenBegin
 		

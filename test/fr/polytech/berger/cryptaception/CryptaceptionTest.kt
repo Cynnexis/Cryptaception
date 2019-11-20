@@ -6,41 +6,59 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.math.BigInteger
 
-internal class RSATest {
-
-	private lateinit var crypta: RSA
-	
-	@BeforeEach
-	fun setUp() {
-		crypta = RSA.randomCryptaception(512)
-	}
+internal class CryptaceptionTest {
 	
 	@Test
-	fun encryptDecryptString() {
-		encryptDecrypt<String>(
+	fun encryptDecryptRSAString() {
+		encryptDecrypt<String, Pair<BigInteger, BigInteger>, BigInteger>(
 			"Hello world",
 			{ x -> x },
+			{ keySizeBits -> RSA.randomCryptaception(keySizeBits) },
 			{ crypta, message -> crypta.encrypt(message) },
 			{ crypta, encryptedMessage -> crypta.decryptToString(encryptedMessage) }
 		)
 	}
 	
 	@Test
-	fun encryptDecryptInt() {
-		encryptDecrypt<Int>(
+	fun encryptDecryptRSAInt() {
+		encryptDecrypt<Int, Pair<BigInteger, BigInteger>, BigInteger>(
 			42,
 			{ x -> x.toString() },
+			{ keySizeBits -> RSA.randomCryptaception(keySizeBits) },
 			{ crypta, message -> crypta.encrypt(message) },
 			{ crypta, encryptedMessage -> crypta.decryptToInt(encryptedMessage) }
 		)
 	}
 	
-	private fun <T> encryptDecrypt(value: T,
+	@Test
+	fun encryptDecryptPaillierString() {
+		encryptDecrypt<String, BigInteger, BigInteger>(
+			"Hello world",
+			{ x -> x },
+			{ keySizeBits -> Paillier.randomCryptaception(keySizeBits) },
+			{ crypta, message -> crypta.encrypt(message) },
+			{ crypta, encryptedMessage -> crypta.decryptToString(encryptedMessage) }
+		)
+	}
+	
+	@Test
+	fun encryptDecryptPaillierInt() {
+		encryptDecrypt<Int, BigInteger, BigInteger>(
+			42,
+			{ x -> x.toString() },
+			{ keySizeBits -> Paillier.randomCryptaception(keySizeBits) },
+			{ crypta, message -> crypta.encrypt(message) },
+			{ crypta, encryptedMessage -> crypta.decryptToInt(encryptedMessage) }
+		)
+	}
+	
+	private fun <T, PK, SK> encryptDecrypt(value: T,
 			                       typeToString: (T) -> String,
-			                       encrypt: (RSA, T) -> BigInteger,
-			                       decrypt: (RSA, BigInteger) -> T) {
+	                               keyGen: (Int) -> Cryptaception<PK, SK>,
+			                       encrypt: (Cryptaception<PK, SK>, T) -> BigInteger,
+			                       decrypt: (Cryptaception<PK, SK>, BigInteger) -> T) {
 		val keyGenBegin = System.currentTimeMillis()
-		crypta = RSA.randomCryptaception(512)
+		val crypta = keyGen(512)
 		val keyGenEnd = System.currentTimeMillis()
 		val keyGenElapsed = keyGenEnd - keyGenBegin
 		

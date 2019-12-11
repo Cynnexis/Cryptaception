@@ -4,8 +4,18 @@ import java.math.BigInteger
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 
+/**
+ * Interface for crypto-system.
+ * @param PK The primary key type.
+ * @param SK The secret key type.
+ */
 interface ICrypt<PK, SK> {
 	
+	/**
+	 * Generate public and secret keys.
+	 * @param keySizeBits The size of the keys in bits.
+	 * @return The size
+	 */
 	fun keyGen(keySizeBits: Int = Cryptaception.DEFAULT_KEY_SIZE_BITS): Pair<PK, SK>
 	
 	fun encrypt(bigInteger: BigInteger): BigInteger

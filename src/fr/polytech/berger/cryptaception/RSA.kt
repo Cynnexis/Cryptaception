@@ -2,7 +2,7 @@ package fr.polytech.berger.cryptaception
 
 import java.math.BigInteger
 
-class RSA(
+open class RSA(
 	private var _publicKey: Pair<BigInteger, BigInteger>,
 	private var _secretKey: BigInteger
 ): Cryptaception<Pair<BigInteger, BigInteger>, BigInteger>(_publicKey, _secretKey) {

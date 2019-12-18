@@ -3,7 +3,7 @@ package fr.polytech.berger.cryptaception
 import java.math.BigInteger
 import java.util.*
 
-class Paillier(
+open class Paillier(
 	private var _publicKey: BigInteger,
 	private var _secretKey: BigInteger
 ): Cryptaception<BigInteger, BigInteger>(_publicKey, _secretKey) {
